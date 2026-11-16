@@ -13,6 +13,27 @@ ANTES DE INSTALAR
 3. Abra o jogo uma vez e feche. Isso cria o arquivo de configuração do addon.
 
 
+ONDE FICA CADA COISA
+--------------------
+O Custom Cursors fica DENTRO da pasta do jogo, que muda de PC para PC
+(ex.: C:\Program Files\Guild Wars 2, D:\Jogos\Guild Wars 2, ou na Steam
+...\steamapps\common\Guild Wars 2). É a pasta que tem o Gw2-64.exe.
+
+  <pasta do jogo>\addons\CustomCursors\settings.json         configuração
+  <pasta do jogo>\addons\CustomCursors\cursors\gw2-facetado\  este pacote
+
+O instalador acha a pasta sozinho: procura nos atalhos do jogo, na lista de
+programas instalados, nos lugares comuns e na Steam, e sempre pergunta antes
+de usar. Se não achar, abre uma janela para você escolher.
+
+Não sabe onde está? Botão direito no atalho do Guild Wars 2 > "Abrir local
+do arquivo". Na Steam: botão direito no jogo > Gerenciar > Procurar arquivos
+locais. Dica: extraia este ZIP dentro da pasta do jogo e ele acha direto.
+
+Os caminhos no settings.json são relativos à pasta do jogo, então funcionam
+em qualquer PC, esteja o jogo onde estiver.
+
+
 INSTALAR
 --------
 1. Extraia o ZIP inteiro em qualquer pasta.

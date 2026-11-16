@@ -2,7 +2,12 @@
 # Shared helpers for instalar.ps1 / desinstalar.ps1.
 #
 # O que este código faz / what this code does:
-#   - procura a pasta do Guild Wars 2 (sem internet, sem registro do Windows alterado)
+#   - procura a pasta do Guild Wars 2 lendo, sem alterar nada: atalhos do jogo,
+#     a lista de programas instalados, lugares comuns e bibliotecas da Steam;
+#     se não achar, abre uma janela para você escolher
+#   - os caminhos gravados no settings.json são relativos à pasta do jogo
+#     ("addons/CustomCursors/cursors/gw2-facetado/..."), então funcionam
+#     em qualquer PC, esteja o jogo onde estiver
 #   - lê e grava SÓ addons\CustomCursors\settings.json, sempre com backup antes
 #   - copia/remove SÓ a pasta addons\CustomCursors\cursors\gw2-facetado
 # Nada é baixado, nada é enviado, nada roda como administrador.
@@ -32,12 +37,43 @@ function Test-GameDir([string]$d) {
     return ($d -and (Test-Path -LiteralPath (Join-Path $d 'Gw2-64.exe')))
 }
 
+# Lê atalhos .lnk (só leitura) e devolve a pasta de quem aponta para Gw2-64.exe.
+# Reads .lnk shortcuts (read only) and returns the folder of those pointing to Gw2-64.exe.
+function Get-ShortcutGameDirs([string[]]$dirs) {
+    $sh = New-Object -ComObject WScript.Shell
+    foreach ($d in $dirs) {
+        if (-not $d -or -not (Test-Path -LiteralPath $d)) { continue }
+        foreach ($l in (Get-ChildItem -LiteralPath $d -Recurse -Filter *.lnk -ErrorAction SilentlyContinue)) {
+            try { $t = $sh.CreateShortcut($l.FullName).TargetPath } catch { continue }
+            if ($t -match '\\Gw2(-64)?\.exe$') { Split-Path $t -Parent }
+        }
+    }
+}
+
 function Get-GameDirCandidates {
     $c = New-Object System.Collections.Generic.List[string]
     # 1. o kit foi extraído dentro da pasta do jogo? / kit extracted inside the game folder?
     $d = $PSScriptRoot
     while ($d) { $c.Add($d); $d = Split-Path $d -Parent }
-    # 2. lugares comuns / common install locations
+    # 2. atalhos do jogo: área de trabalho, menu Iniciar, barra de tarefas
+    #    game shortcuts: desktop, Start menu, taskbar
+    $lnk = @([Environment]::GetFolderPath('Desktop'), [Environment]::GetFolderPath('CommonDesktopDirectory'),
+             [Environment]::GetFolderPath('StartMenu'), [Environment]::GetFolderPath('CommonStartMenu'),
+             (Join-Path $env:APPDATA 'Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar'))
+    foreach ($x in (Get-ShortcutGameDirs $lnk)) { $c.Add($x) }
+    # 3. lista de programas instalados do Windows (só leitura) / Windows installed-programs list (read only)
+    foreach ($k in @('HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall',
+                     'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall',
+                     'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall')) {
+        foreach ($e in (Get-ChildItem $k -ErrorAction SilentlyContinue)) {
+            $p = Get-ItemProperty $e.PSPath -ErrorAction SilentlyContinue
+            if ("$($p.DisplayName)" -like 'Guild Wars 2*') {
+                if ($p.InstallLocation) { $c.Add($p.InstallLocation.TrimEnd('\')) }
+                if ($p.DisplayIcon) { $c.Add((Split-Path ($p.DisplayIcon -replace '"|,\d+$', '') -Parent)) }
+            }
+        }
+    }
+    # 4. lugares comuns / common install locations
     foreach ($root in @($env:ProgramFiles, ${env:ProgramFiles(x86)})) {
         if ($root) { $c.Add((Join-Path $root 'Guild Wars 2')) }
     }
@@ -46,7 +82,7 @@ function Get-GameDirCandidates {
             $c.Add((Join-Path $drv.Root $sub))
         }
     }
-    # 3. bibliotecas da Steam (só leitura) / Steam libraries (read only)
+    # 5. bibliotecas da Steam (só leitura) / Steam libraries (read only)
     try {
         $steam = (Get-ItemProperty 'HKCU:\Software\Valve\Steam' -ErrorAction Stop).SteamPath
         $vdf = Join-Path $steam 'steamapps\libraryfolders.vdf'

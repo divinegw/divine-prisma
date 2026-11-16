@@ -46,6 +46,34 @@ Para trocar de cor ou de tamanho, rode outro `Instalar`. Para desfazer, use `Des
 
 Os desenhos que o mapa não usa (seta dupla, martelo, girar, alvo, alvo de área, mão de apontar) ficam na pasta do pacote. Dá para escolhê-los no menu do Custom Cursors, dentro do jogo. Os pontos de clique estão em `gw2-facetado\hotspots.json`.
 
+## Onde fica cada coisa
+
+O Custom Cursors fica **dentro da pasta do jogo**, que muda de PC para PC:
+
+| Instalação | Pasta do jogo (exemplo) |
+|---|---|
+| Instalador da ArenaNet | `C:\Program Files\Guild Wars 2` |
+| Steam | `...\steamapps\common\Guild Wars 2` |
+| Pasta escolhida por você | por exemplo, `D:\Jogos\Guild Wars 2` |
+
+Em qualquer caso, o pacote vai para `<pasta do jogo>\addons\CustomCursors\cursors\gw2-facetado\`, e a configuração fica em `<pasta do jogo>\addons\CustomCursors\settings.json`.
+
+**Como o instalador acha a pasta do jogo.** Ele procura nesta ordem, só lendo e sem alterar nada:
+1. se o ZIP foi extraído dentro da própria pasta do jogo;
+2. os atalhos do jogo na área de trabalho, no menu Iniciar e na barra de tarefas;
+3. a lista de programas instalados do Windows;
+4. os lugares comuns (`Program Files`, `\Games`, `\Guild Wars 2` em cada disco);
+5. as bibliotecas da Steam.
+
+Ele sempre mostra a pasta encontrada e pergunta antes de usar. Se não achar nenhuma, abre uma janela para você escolher a pasta que tem o `Gw2-64.exe`.
+
+**Não sabe onde está o jogo?**
+- Clique com o botão direito no atalho do Guild Wars 2 e escolha **Abrir local do arquivo**.
+- Na Steam: botão direito no jogo → **Gerenciar → Procurar arquivos locais**.
+- Dica: extraia o ZIP dentro da pasta do jogo, e o instalador a encontra direto.
+
+**Funciona em qualquer PC:** o `settings.json` guarda caminhos **relativos à pasta do jogo** (`addons/CustomCursors/cursors/gw2-facetado/...`). Por isso, não importa em que disco ou pasta o jogo está instalado.
+
 ## Quais cursores mudam
 
 O jogo usa ids diferentes para o mesmo cursor no contraste normal e no contraste alto (com halo). O mapa cobre os dois modos:
@@ -129,6 +157,15 @@ The installer:
 - shows what will change before applying it;
 - backs up `settings.json`;
 - changes only the 34 known cursor ids, covering both normal and high-contrast modes. The enemy arrow stays red and the ally arrow green.
+
+Custom Cursors lives **inside your game folder**: `<game folder>\addons\CustomCursors\`. The game folder differs per PC; it is the one with `Gw2-64.exe`. The installer looks for it, read-only, in this order:
+1. the folder the ZIP was extracted into;
+2. game shortcuts on the desktop, Start menu and taskbar;
+3. the Windows installed-programs list;
+4. common locations;
+5. Steam libraries.
+
+It always asks before using a folder, and opens a folder picker if nothing is found. Paths saved in `settings.json` are relative to the game folder, so it works wherever the game is installed.
 
 `Desinstalar.bat` (*uninstall*) resets those cursors. To install without running a script, copy the pack folder and `manual\<Colour>\settings.json`; this replaces your whole `settings.json`.
 

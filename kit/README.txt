@@ -17,6 +17,27 @@ BEFORE YOU INSTALL
 3. Start the game once and close it. This creates the addon's settings file.
 
 
+WHERE THINGS ARE
+----------------
+Custom Cursors lives INSIDE your game folder, which differs per PC
+(e.g. C:\Program Files\Guild Wars 2, D:\Games\Guild Wars 2, or on Steam
+...\steamapps\common\Guild Wars 2). It is the folder with Gw2-64.exe.
+
+  <game folder>\addons\CustomCursors\settings.json         settings
+  <game folder>\addons\CustomCursors\cursors\gw2-facetado\  this pack
+
+The installer finds it on its own (game shortcuts, installed-programs list,
+common locations, Steam) and always asks first. If nothing is found, it opens
+a folder picker.
+
+Not sure where it is? Right-click the Guild Wars 2 shortcut > "Open file
+location". On Steam: right-click the game > Manage > Browse local files.
+Tip: extract this ZIP inside the game folder and it is found right away.
+
+Paths in settings.json are relative to the game folder, so they work on any
+PC, wherever the game is installed.
+
+
 INSTALL
 -------
 1. Extract the whole ZIP anywhere.
