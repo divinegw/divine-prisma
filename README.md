@@ -16,9 +16,21 @@ Pegue os arquivos na página [**Releases**](../../releases/latest):
 
 | Arquivo | Para quem |
 |---|---|
-| `gw2-facetado-kit.zip` | Quem usa o **Nexus** com o **Custom Cursors**. Traz o instalador, a instalação manual e o pacote de PNGs. |
-| `gw2-facetado-cur.zip` | **YoloMouse** e outros programas que leem `.cur`. Uma pasta por cor, e cada `.cur` traz os 5 tamanhos. |
+| `gw2-facetado-kit.zip` | Quem usa o **Nexus** com o **Custom Cursors**. Uma pasta por cor, com a prévia daquela cor, um instalador para cada tamanho, o desinstalador e a instalação manual. |
+| `gw2-facetado-cur.zip` | **YoloMouse** e outros programas que leem `.cur`. Uma pasta por cor, com a prévia e uma subpasta para cada tamanho. |
 | `SHA256.txt` | Os hashes dos ZIPs, para conferir o download. |
+
+<details>
+<summary><b>Prévia de cada cor</b> (as mesmas imagens que vão dentro das pastas)</summary>
+
+| | |
+|---|---|
+| ![Roxo](docs/previa-roxo.png) | ![Verde](docs/previa-verde.png) |
+| ![Ciano](docs/previa-ciano.png) | ![Dourado](docs/previa-dourado.png) |
+| ![Prata](docs/previa-prata.png) | ![Rosa](docs/previa-rosa.png) |
+| ![Vermelho](docs/previa-vermelho.png) | |
+
+</details>
 
 ## Instalação (Nexus e Custom Cursors)
 
@@ -27,10 +39,30 @@ Pegue os arquivos na página [**Releases**](../../releases/latest):
 2. Na biblioteca de addons do Nexus, instale o **Custom Cursors** (jordanrye).
 3. Abra o jogo uma vez e feche. Isso cria o `settings.json` do addon.
 
+**O que tem no ZIP:**
+```
+gw2-facetado-kit\
+  Ciano\  Dourado\  Prata\  Rosa\  Roxo\  Verde\  Vermelho\
+    previa-verde.png               ← os desenhos daquela cor e os 5 tamanhos
+    Instalar Verde 32 px.bat
+    Instalar Verde 48 px.bat
+    Instalar Verde 64 px.bat
+    Instalar Verde 96 px.bat
+    Instalar Verde 128 px.bat
+    Desinstalar.bat
+    manual (sem script)\32 px\settings.json …
+  Desinstalar.bat                  ← o mesmo desinstalador, na raiz
+  _arquivos\                       ← pacote de imagens e scripts (não precisa abrir)
+  previa-todas-as-cores.png, LEIA-ME.txt, README.txt, LICENSE.txt
+```
+
 **Com o instalador (recomendado):**
 1. Extraia o `gw2-facetado-kit.zip` inteiro.
-2. Com o jogo **fechado**, dê dois cliques em `Instalar - <Cor>.bat`, por exemplo `Instalar - Verde.bat`.
-3. Confirme a pasta do jogo, escolha o tamanho (Enter = 48) e confirme.
+2. Abra a pasta da cor que você quer e veja a prévia.
+3. Com o jogo **fechado**, dê dois cliques em `Instalar <Cor> <tamanho> px.bat`, por exemplo `Instalar Verde 48 px.bat`.
+4. Confirme a pasta do jogo e confirme a instalação.
+
+**Qual tamanho?** O padrão é 48 px. Em telas grandes, ou com a interface do jogo ampliada, experimente 64 px. Os de 96 e 128 px são para quem quer o cursor bem grande.
 
 O instalador:
 - mostra a lista do que vai mudar antes de aplicar;
@@ -38,13 +70,25 @@ O instalador:
 - copia o pacote para `addons\CustomCursors\cursors\gw2-facetado`;
 - troca **só** os 34 cursores conhecidos, sem mexer nos outros cursores nem nas opções do addon.
 
-Para trocar de cor ou de tamanho, rode outro `Instalar`. Para desfazer, use `Desinstalar.bat`: ele volta esses cursores ao padrão do jogo e pergunta se deve apagar a pasta do pacote.
+Para trocar de cor ou de tamanho, rode outro `Instalar`. Para desfazer, use `Desinstalar.bat`, na raiz ou em qualquer pasta de cor, porque é o mesmo arquivo. Ele volta esses cursores ao padrão do jogo e pergunta se deve apagar a pasta do pacote.
 
-**Sem script (manual, 48 px):**
-1. Copie a pasta `gw2-facetado` do ZIP para `addons\CustomCursors\cursors\`.
-2. Copie `manual\<Cor>\settings.json` para `addons\CustomCursors\`. **Atenção:** isso substitui o arquivo inteiro. Se você já tinha cursores configurados no addon, guarde o seu antes.
+**Sem script (manual):**
+1. Copie `_arquivos\gw2-facetado` para `<pasta do jogo>\addons\CustomCursors\cursors\`.
+2. Copie `<Cor>\manual (sem script)\<tamanho> px\settings.json` para `<pasta do jogo>\addons\CustomCursors\`. **Atenção:** isso substitui o arquivo inteiro. Se você já tinha cursores configurados no addon, guarde o seu antes.
 
-Os desenhos que o mapa não usa (seta dupla, martelo, girar, alvo, alvo de área, mão de apontar) ficam na pasta do pacote. Dá para escolhê-los no menu do Custom Cursors, dentro do jogo. Os pontos de clique estão em `gw2-facetado\hotspots.json`.
+Os desenhos que o jogo não usa por padrão (seta dupla, martelo, girar, alvo, alvo de área, mão de apontar) também são instalados. Dá para escolhê-los no menu do Custom Cursors, dentro do jogo. Os pontos de clique estão em `_arquivos\gw2-facetado\hotspots.json`.
+
+## YoloMouse (`.cur`)
+
+```
+gw2-facetado-cur\
+  Verde\                         (e as outras 6 cores)
+    previa-verde.png
+    32 px\  48 px\  64 px\  96 px\  128 px\   ← os 42 cursores num tamanho só
+    todos os tamanhos\                         ← os 42, cada .cur com os 5 tamanhos
+```
+
+São 21 desenhos, cada um na versão normal e com `-brilho`. Cada `.cur` já traz o ponto de clique certo. O YoloMouse não tem instalador, porque cada cursor é escolhido dentro do jogo. Copie a pasta do tamanho que quiser (por exemplo, `Verde\48 px`) para a pasta de cursores do YoloMouse e, no jogo, aperte **Ctrl+Alt+C** sobre cada cursor para escolher o desenho. Ainda não foi testado dentro do YoloMouse.
 
 ## Onde fica cada coisa
 
@@ -121,9 +165,9 @@ Requer Python 3 com Pillow e NumPy.
 |---|---|
 | `scripts/gw2_cursors.py <saida> [--sheet previa.png] [--only tipos]` | Gera os PNGs, o `hotspots.json` e a prévia. |
 | `scripts/gw2_cursors_audit_halo.py <pacote> <saida.png>` | Mede a largura da borda de brilho. |
-| `scripts/gw2_cursors_to_cur.py <pacote> <saida>` | Converte o pacote em `.cur` multitamanho, organizado por cor. |
+| `scripts/gw2_cursors_to_cur.py <pacote> <saida>` | Converte o pacote em `.cur`, organizado por cor, com uma pasta por tamanho e uma com os `.cur` multitamanho. |
 | `scripts/gw2_cursors_check_cur.py <saida>` | Carrega cada `.cur` pela API do Windows e confere o tamanho e o ponto de clique. |
-| `scripts/gw2_cursors_build_kit.py <pacote> kit <dist>` | Monta o kit, os `settings.json` manuais, os ZIPs e os hashes. |
+| `scripts/gw2_cursors_build_kit.py <pacote> kit <dist> [--so-previas]` | Monta o kit: pastas por cor, prévias, um `.bat` por tamanho, `settings.json` manuais, ZIPs e hashes. |
 
 ## Licença
 
@@ -145,13 +189,14 @@ Faceted cursors for **Guild Wars 2**, made for the **Custom Cursors** Nexus addo
 - Original artwork, generated by code. No third-party files.
 
 **Download** from [Releases](../../releases/latest):
-- `gw2-facetado-kit.zip`: installer and pack for Nexus + Custom Cursors.
-- `gw2-facetado-cur.zip`: `.cur` files for YoloMouse and similar tools, one folder per colour, 5 sizes per file.
+- `gw2-facetado-kit.zip`: for Nexus + Custom Cursors. One folder per colour with a preview, one installer per size, an uninstaller and ready-made `settings.json` files.
+- `gw2-facetado-cur.zip`: `.cur` files for YoloMouse and similar tools. One folder per colour with a preview and one subfolder per size; `todos os tamanhos` holds files that contain all 5 sizes.
 
 **Install:**
 1. Install [Nexus](https://raidcore.gg/Nexus) and the **Custom Cursors** addon from its library.
 2. Start the game once, then close it.
-3. Extract the ZIP and, with the game **closed**, double-click `Instalar - <Colour>.bat` (*Instalar* = install).
+3. Extract the ZIP and open the folder of the colour you want.
+4. With the game **closed**, double-click `Instalar <Colour> <size> px.bat`, for example `Instalar Verde 48 px.bat` (*Instalar* = install). 48 px is the default; try 64 px on large screens.
 
 The installer:
 - shows what will change before applying it;
@@ -167,7 +212,9 @@ Custom Cursors lives **inside your game folder**: `<game folder>\addons\CustomCu
 
 It always asks before using a folder, and opens a folder picker if nothing is found. Paths saved in `settings.json` are relative to the game folder, so it works wherever the game is installed.
 
-`Desinstalar.bat` (*uninstall*) resets those cursors. To install without running a script, copy the pack folder and `manual\<Colour>\settings.json`; this replaces your whole `settings.json`.
+`Desinstalar.bat` (*uninstall*, at the top level or in any colour folder) resets those cursors. To install without running a script, copy `_arquivos\gw2-facetado` and `<Colour>\manual (sem script)\<size> px\settings.json`; this replaces your whole `settings.json`.
+
+**YoloMouse:** there is no installer, since YoloMouse picks each cursor in game. Copy a size folder (e.g. `Verde\48 px`) into YoloMouse's cursor folder and press **Ctrl+Alt+C** over each cursor in game. Not yet tested inside YoloMouse.
 
 **Safety:**
 - There is no `.exe`. Each `.bat` is a single line, and the PowerShell scripts in [`kit/_instalador`](kit/_instalador) are plain text you can read first.

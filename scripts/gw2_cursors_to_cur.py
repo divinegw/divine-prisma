@@ -1,8 +1,9 @@
 """Converte o pacote gw2-facetado (PNGs) em cursores .cur do Windows.
 
-Cada tipo/cor vira UM .cur com os 5 tamanhos (32, 48, 64, 96, 128) dentro,
-cada tamanho com o seu ponto de clique tirado do hotspots.json. O Windows
-(e programas como o YoloMouse) escolhem o tamanho mais próximo do pedido.
+Saída por cor: <Cor>/todos os tamanhos/ tem um .cur por tipo com os 5 tamanhos
+(32, 48, 64, 96, 128) dentro, cada um com o seu ponto de clique tirado do
+hotspots.json; o Windows (e programas como o YoloMouse) escolhem o tamanho mais
+próximo. <Cor>/<N> px/ tem os mesmos cursores com um tamanho só.
 
 As imagens vão como DIB 32 bits (BGRA + máscara AND), o formato clássico,
 para funcionar até em leitores de .cur que não aceitam PNG embutido.
@@ -14,6 +15,8 @@ from collections import defaultdict
 from PIL import Image
 
 PACK, OUT = sys.argv[1], sys.argv[2]
+NOMES = {"roxo": "Roxo", "ciano": "Ciano", "dourado": "Dourado", "prata": "Prata",
+         "rosa": "Rosa", "verde": "Verde", "vermelho": "Vermelho"}
 hot = json.load(open(os.path.join(PACK, "hotspots.json"), encoding="utf-8"))
 
 
@@ -66,13 +69,19 @@ for (tipo, cor), items in sorted(groups.items()):
         if img.size != (size, size):
             sys.exit(f"tamanho inesperado em {rel}: {img.size}")
         entries.append((img, hx, hy))
-    # organizado por cor: quem quer o verde pega só a pasta verde (normal + brilho)
-    dest_rel = f"{cor.removesuffix('-brilho')}/gw2-{tipo}-{cor}.cur"
-    dest = os.path.join(OUT, *dest_rel.split("/"))
-    os.makedirs(os.path.dirname(dest), exist_ok=True)
-    with open(dest, "wb") as f:
-        f.write(cur(entries))
-    manifest[dest_rel] = {str(s): list(hs) for s, _, hs in items}
+    # organizado por cor (Verde/, Roxo/...), como o kit do Nexus:
+    #   <Cor>/todos os tamanhos/gw2-tipo-cor.cur   -> os 5 tamanhos num arquivo só
+    #   <Cor>/<N> px/gw2-tipo-cor-N.cur            -> um tamanho só
+    pasta = NOMES[cor.removesuffix("-brilho")]
+    saidas = [(f"{pasta}/todos os tamanhos/gw2-{tipo}-{cor}.cur", entries, items)]
+    for e, it in zip(entries, items):
+        saidas.append((f"{pasta}/{it[0]} px/gw2-{tipo}-{cor}-{it[0]}.cur", [e], [it]))
+    for dest_rel, ents, its in saidas:
+        dest = os.path.join(OUT, *dest_rel.split("/"))
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        with open(dest, "wb") as f:
+            f.write(cur(ents))
+        manifest[dest_rel] = {str(s): list(hs) for s, _, hs in its}
 
 with open(os.path.join(OUT, "hotspots-cur.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(manifest, f, indent=1, ensure_ascii=False)
