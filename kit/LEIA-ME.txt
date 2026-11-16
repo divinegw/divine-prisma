@@ -1,0 +1,77 @@
+gw2-facetado — cursores facetados para Guild Wars 2
+====================================================
+
+Pacote de cursores original, desenhado no estilo facetado e metálico do jogo.
+21 desenhos, 7 cores, versão normal e com brilho, 5 tamanhos.
+Prévia: gw2-facetado\_previa.png
+
+
+ANTES DE INSTALAR
+-----------------
+1. Tenha o Nexus (raidcore.gg/Nexus) instalado.
+2. Na biblioteca de addons do Nexus, instale o "Custom Cursors" (jordanrye).
+3. Abra o jogo uma vez e feche. Isso cria o arquivo de configuração do addon.
+
+
+INSTALAR
+--------
+1. Extraia o ZIP inteiro em qualquer pasta.
+2. Com o jogo FECHADO, dê dois cliques em "Instalar - <Cor>.bat".
+3. Confirme a pasta do jogo, escolha o tamanho (Enter = 48) e confirme.
+
+O instalador:
+- muda só os cursores conhecidos do jogo (seta, conversar, interagir, mãos,
+  reviver, mira, zoom, reciclar, redimensionar), nos dois modos de contraste
+  do jogo (normal e alto, com halo); a seta de inimigo continua vermelha e a
+  de aliado, verde;
+- não mexe nos outros cursores nem nas outras opções do addon;
+- faz backup do settings.json antes (settings.json.backup-gw2-facetado-...).
+
+Para trocar de cor ou tamanho, é só rodar outro "Instalar".
+Os outros desenhos (lupa, martelo, mira, mãos etc.) ficam na pasta
+addons\CustomCursors\cursors\gw2-facetado e podem ser escolhidos no menu
+do Custom Cursors, dentro do jogo.
+
+
+DESINSTALAR
+-----------
+Com o jogo fechado, dê dois cliques em "Desinstalar.bat".
+Os cursores do gw2-facetado voltam ao padrão do jogo e, se você quiser,
+a pasta do pacote é apagada.
+
+
+É SEGURO?
+---------
+- Não há nenhum .exe. Os .bat têm uma linha só e chamam os scripts da pasta
+  _instalador, que você pode abrir no Bloco de Notas e ler antes de rodar.
+- Os scripts não usam internet, não pedem administrador e só mexem em:
+    addons\CustomCursors\settings.json   (com backup)
+    addons\CustomCursors\cursors\gw2-facetado\
+- O .bat usa "-ExecutionPolicy Bypass" porque o Windows bloqueia scripts
+  baixados da internet. Essa opção vale só para este script, nesta execução.
+- Confira o SHA-256 do ZIP com o publicado na página de download:
+    certutil -hashfile gw2-facetado-kit.zip SHA256
+
+Prefere não rodar script nenhum? Instalação manual (48 px):
+1. Copie a pasta gw2-facetado para addons\CustomCursors\cursors\
+2. Copie manual\<Cor>\settings.json para addons\CustomCursors\
+   ATENÇÃO: isso substitui o settings.json inteiro. Se você já tinha
+   cursores configurados no addon, guarde uma cópia do seu antes.
+Ou escolha cada cursor no menu do Custom Cursors, dentro do jogo; os pontos
+de clique de cada arquivo estão em gw2-facetado\hotspots.json.
+
+
+AVISOS
+------
+- O Custom Cursors pode mostrar um aviso quando nem todos os cursores do jogo
+  têm arquivo definido (issue #4 do addon). É só um aviso.
+- Addons são de terceiros: a ArenaNet não aprova nem revisa nenhum, e o uso é
+  por sua conta. Este pacote só troca a aparência do cursor.
+- Este pacote não é afiliado à ArenaNet, à NCSOFT nem ao autor do Custom Cursors.
+
+
+PROJETO E LICENÇA
+-----------------
+Página, código-fonte e problemas: https://github.com/divinegw/gw2-facetado
+Desenhos: CC BY-NC 4.0 (use e modifique com crédito, sem vender).
+Scripts: MIT.
