@@ -1,12 +1,12 @@
-r"""Monta o kit de lançamento do gw2-facetado.
+r"""Monta o kit de lançamento do Divine Prisma.
 
 Saída em <dist>:
-  gw2-facetado-kit\          pasta do kit (instalador Nexus/Custom Cursors)
+  divine-prisma-kit\          pasta do kit (instalador Nexus/Custom Cursors)
     Instalar.bat             abre a janela do instalador (cor, tamanho, instalar/desinstalar)
     Desinstalar.bat          desinstalador de linha de comando
     _arquivos\               pacote PNG, scripts, prévias por cor e settings.json manuais
-  gw2-facetado-kit.zip       o mesmo, zipado
-  gw2-facetado-cur.zip       os .cur por cor (YoloMouse e afins), se existirem
+  divine-prisma-kit.zip      o mesmo, zipado
+  divine-prisma-cur.zip      os .cur por cor (YoloMouse e afins), se existirem
   SHA256.txt                 hashes dos ZIPs
 
 uso: python gw2_cursors_build_kit.py <pasta_do_pacote_png> <pasta_kit_fonte> <dist> [--so-previas]
@@ -18,9 +18,9 @@ PACK, SRC, DIST = sys.argv[1:4]
 CORES = [("roxo", "Roxo"), ("ciano", "Ciano"), ("dourado", "Dourado"), ("prata", "Prata"),
          ("rosa", "Rosa"), ("verde", "Verde"), ("vermelho", "Vermelho")]
 TAMANHOS = [32, 48, 64, 96, 128]
-KIT = os.path.join(DIST, "gw2-facetado-kit")
+KIT = os.path.join(DIST, "divine-prisma-kit")
 ARQ = os.path.join(KIT, "_arquivos")
-PACK_REL = "addons/CustomCursors/cursors/gw2-facetado"
+PACK_REL = "addons/CustomCursors/cursors/divine-prisma"
 TIPOS = sorted(d for d in os.listdir(PACK) if os.path.isdir(os.path.join(PACK, d)) and not d.startswith("."))
 
 
@@ -57,7 +57,7 @@ def previa(cor, nome, destino):
     img = Image.new("RGB", (W, H), FUNDO)
     d = ImageDraw.Draw(img)
     y = M
-    d.text((M, y), f"gw2-facetado · {nome}", font=f_tit, fill=TXT)
+    d.text((M, y), f"Divine Prisma · {nome}", font=f_tit, fill=TXT)
     d.text((M, y + 46), "21 desenhos · versão normal e com brilho · 5 tamanhos · para o Custom Cursors (Nexus)",
            font=f_txt, fill=SUB)
     y += 80 + 20
@@ -98,7 +98,7 @@ def previa(cor, nome, destino):
             d.text((cx + (cel - w) / 2, cy + 66), tipo, font=f_peq, fill=cor_txt)
     y += linhas * (cel + 22) + 20
     d.text((M, y), "Inimigo continua vermelho; a seta de aliado segue a cor (ou verde, opção do instalador). "
-                   "github.com/divinegw/gw2-facetado", font=f_peq, fill=SUB)
+                   "github.com/divinegw/divine-prisma", font=f_peq, fill=SUB)
     img.save(destino, optimize=True)
 
 
@@ -111,11 +111,15 @@ if "--so-previas" in sys.argv:
 # ---------------------------------------------------------------- kit
 if os.path.isdir(KIT):
     shutil.rmtree(KIT)
-shutil.copytree(PACK, os.path.join(ARQ, "gw2-facetado"), ignore=shutil.ignore_patterns(".*"))
+shutil.copytree(PACK, os.path.join(ARQ, "divine-prisma"), ignore=shutil.ignore_patterns(".*"))
 
 # scripts: PowerShell 5.1 precisa de BOM para ler acentos em UTF-8
 for name in os.listdir(os.path.join(SRC, "_instalador")):
-    text = open(os.path.join(SRC, "_instalador", name), encoding="utf-8-sig").read()
+    if name.endswith(".png"):  # emblema da janela / window emblem
+        os.makedirs(os.path.join(ARQ, "instalador"), exist_ok=True)
+        shutil.copy(os.path.join(SRC, "_instalador", name), os.path.join(ARQ, "instalador", name))
+        continue
+    text =open(os.path.join(SRC, "_instalador", name), encoding="utf-8-sig").read()
     write(os.path.join(ARQ, "instalador", name), text, "utf-8-sig" if name.endswith(".ps1") else "utf-8")
 for name in ("LEIA-ME.txt", "README.txt", "LICENSE.txt"):
     write(os.path.join(KIT, name), open(os.path.join(SRC, name), encoding="utf-8-sig").read(), "utf-8-sig")
@@ -196,7 +200,7 @@ def zipdir(folder, zpath, root_name):
                 z.write(full, os.path.join(root_name, os.path.relpath(full, folder)))
 
 
-CUR_README = r"""gw2-facetado — cursores .cur / .cur cursors
+CUR_README = r"""Divine Prisma: cursores .cur / .cur cursors
 ===========================================
 
 Uma pasta por cor (Ciano, Dourado, Prata, Rosa, Roxo, Verde, Vermelho).
@@ -223,13 +227,13 @@ size (32-128 px) and "todos os tamanhos" (all sizes in each .cur).
 into YoloMouse's cursor folder and press Ctrl+Alt+C in game over each cursor to
 pick it. Not yet tested inside YoloMouse.
 
-https://github.com/divinegw/gw2-facetado
-Desenhos / artwork: CC BY-NC 4.0 — veja / see LICENSE.txt
+https://github.com/divinegw/divine-prisma
+Desenhos / artwork: CC BY-NC 4.0, veja / see LICENSE.txt
 """
 
-zips = [os.path.join(DIST, "gw2-facetado-kit.zip")]
-zipdir(KIT, zips[0], "gw2-facetado-kit")
-cur = os.path.join(DIST, "gw2-facetado-cur")
+zips = [os.path.join(DIST, "divine-prisma-kit.zip")]
+zipdir(KIT, zips[0], "divine-prisma-kit")
+cur = os.path.join(DIST, "divine-prisma-cur")
 if os.path.isdir(cur):
     write(os.path.join(cur, "LICENSE.txt"), open(os.path.join(SRC, "LICENSE.txt"), encoding="utf-8-sig").read(), "utf-8-sig")
     write(os.path.join(cur, "LEIA-ME.txt"), CUR_README, "utf-8-sig")
@@ -237,8 +241,8 @@ if os.path.isdir(cur):
         if os.path.isdir(os.path.join(cur, nome)):
             shutil.copy(os.path.join(ARQ, "previas", f"previa-{cor}.png"), os.path.join(cur, nome, f"previa-{cor}.png"))
     shutil.copy(os.path.join(PACK, "_previa.png"), os.path.join(cur, "previa-todas-as-cores.png"))
-    zips.append(os.path.join(DIST, "gw2-facetado-cur.zip"))
-    zipdir(cur, zips[1], "gw2-facetado-cur")
+    zips.append(os.path.join(DIST, "divine-prisma-cur.zip"))
+    zipdir(cur, zips[1], "divine-prisma-cur")
 
 lines = []
 for z in zips:

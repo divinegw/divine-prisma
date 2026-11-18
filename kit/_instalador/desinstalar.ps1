@@ -1,7 +1,7 @@
-# gw2-facetado: desinstalador de linha de comando (a janela, janela.ps1, faz o mesmo).
-# Volta ao padrão do jogo SÓ os cursores que apontam para a pasta gw2-facetado
+# Divine Prisma: desinstalador de linha de comando (a janela, janela.ps1, faz o mesmo).
+# Volta ao padrão do jogo SÓ os cursores que apontam para a pasta do pack (divine-prisma ou a antiga gw2-facetado)
 # (outros cursores que você configurou ficam como estão) e, se pedir, apaga a pasta.
-# Resets ONLY cursors pointing to the gw2-facetado folder, then optionally deletes it.
+# Resets ONLY cursors pointing to the pack folder (divine-prisma or the old gw2-facetado), then optionally deletes it.
 #
 #   desinstalar.ps1 [-PastaJogo "D:\Guild Wars 2"] [-ApagarPasta] [-SemPerguntas]
 param(

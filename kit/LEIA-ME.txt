@@ -1,14 +1,15 @@
-gw2-facetado — cursores facetados para Guild Wars 2
-====================================================
+Divine Prisma: cursores prismáticos para Guild Wars 2
+===================================================
 
-Pacote de cursores original, desenhado no estilo facetado e metálico do jogo.
-21 desenhos, 7 cores, versão normal e com brilho, 5 tamanhos.
+Pacote de cursores original da guilda DIVINE, desenhado no estilo prismático
+e metálico, como os cursores do jogo. São 21 desenhos em 7 cores, cada um
+em versão normal e com brilho, em 5 tamanhos.
 Prévia de todas as cores: previa-todas-as-cores.png
 
 
 INSTALAR EM 3 PASSOS
 --------------------
-1. Precisa do Nexus (raidcore.gg/Nexus) e do addon "Custom Cursors"
+1. Você precisa do Nexus (raidcore.gg/Nexus) e do addon "Custom Cursors"
    (no jogo: Ctrl+O > Addons > Library > Custom Cursors > Install).
 2. Extraia o ZIP inteiro (botão direito > Extrair tudo) e feche o jogo.
 3. Dê dois cliques em "Instalar.bat". Na janela, escolha a cor e o tamanho
@@ -16,100 +17,109 @@ INSTALAR EM 3 PASSOS
 
 A janela acha a pasta do jogo sozinha e mostra se o Nexus e o Custom Cursors
 estão lá. Para trocar de cor ou de tamanho, abra o Instalar.bat de novo.
-Não precisa mais abrir o jogo antes: se o addon ainda não tem configuração,
-o instalador cria uma.
+Não precisa abrir o jogo antes: se o addon ainda não tem configuração, o
+instalador cria uma.
 
 
 QUAL TAMANHO?
 -------------
-48 px é o padrão. Em telas grandes ou com a interface do jogo ampliada,
-experimente 64 px; 96 e 128 px são para quem quer o cursor bem grande.
-A janela mostra a prévia em tamanho real.
+48 px é o padrão. Em tela grande ou com a interface do jogo ampliada, teste
+64 px. 96 e 128 px são para quem quer o cursor bem grande. A janela mostra
+a prévia em tamanho real.
 
 O jogo tem três modos de "Contraste do cursor" (Opções > Geral >
 Acessibilidade): Desligar, Baixo e Alto. Cada modo usa cursores diferentes
-(sem halo, com halo e com anel). O instalador cobre os três e ajusta o
-tamanho para o cursor ficar do mesmo tamanho na tela em qualquer modo.
-No modo Alto, por enquanto só a seta padrão é trocada (veja AVISOS).
+(sem halo, com halo e com anel). O instalador troca os três e acerta o
+tamanho para o cursor ficar igual na tela em qualquer modo.
+No modo Alto, por enquanto, só a seta padrão é trocada (veja AVISOS).
 
 
 O QUE O INSTALADOR MUDA
 -----------------------
-- Só os cursores conhecidos do jogo: seta, conversar, interagir, mãos,
-  reviver, mira, inspecionar (lupa), kit de reciclagem e redimensionar.
-- A seta de inimigo continua vermelha. A seta de aliado (aparece sobre NPCs
-  amigos) fica na cor escolhida; marque "Seta de aliado em verde" na janela
-  se preferir o verde do jogo.
-- Não mexe nos outros cursores nem nas outras opções do addon.
-- Faz backup do settings.json antes (settings.json.backup-gw2-facetado-...).
+- Só os cursores do jogo que já conhecemos: seta, conversar, interagir,
+  mãos, reviver, mira, inspecionar (lupa), kit de reciclagem e
+  redimensionar.
+- A seta de inimigo continua vermelha. A seta de aliado (a que aparece sobre
+  NPCs amigos) fica na cor escolhida. Se preferir o verde do jogo, ligue
+  "Seta de aliado em verde" na janela.
+- Os outros cursores e as outras opções do addon ficam como estão.
+- Antes de mudar o settings.json, ele faz um backup
+  (settings.json.backup-divine-prisma-...).
 
-Desenhos que o jogo não usa (seta dupla, martelo, girar, alvo, alvo de área,
-mão de apontar) ficam na pasta do pacote como extras. O jogo não tem cursor
-de martelo: o kit de reciclagem (inclusive os infinitos) usa a seta com
-setas circulares verdes/vermelhas, que já é trocada pelo instalador. Para usar
-um extra, escolha-o no menu do Custom Cursors, dentro do jogo.
+Alguns desenhos o jogo não usa: seta dupla, martelo, girar, alvo, alvo de
+área e mão de apontar. Eles vão para a pasta do pacote como extras. Para usar
+um, escolha no menu do Custom Cursors, dentro do jogo.
+O jogo não tem cursor de martelo. O kit de reciclagem (os infinitos também)
+usa a seta com setas circulares verdes ou vermelhas, e essa o instalador já
+troca.
 
 
 DESINSTALAR
 -----------
 Abra o Instalar.bat e clique em Desinstalar, ou dê dois cliques em
-"Desinstalar.bat". Os cursores do gw2-facetado voltam ao padrão do jogo e a
-pasta do pacote é apagada. Os outros cursores ficam como estão.
+"Desinstalar.bat". Os cursores do Divine Prisma voltam ao padrão do jogo e a
+pasta do pacote é apagada. Os outros cursores não mudam.
 
 
 ONDE FICA CADA COISA
 --------------------
-O Custom Cursors fica DENTRO da pasta do jogo (a que tem o Gw2-64.exe), que
-muda de PC para PC (ex.: C:\Program Files\Guild Wars 2, D:\Jogos\Guild Wars 2,
-ou na Steam ...\steamapps\common\Guild Wars 2).
+O Custom Cursors fica DENTRO da pasta do jogo (a que tem o Gw2-64.exe), e
+essa pasta muda de PC para PC. Exemplos: C:\Program Files\Guild Wars 2,
+D:\Jogos\Guild Wars 2, ou na Steam ...\steamapps\common\Guild Wars 2.
 
   <pasta do jogo>\addons\CustomCursors\settings.json         configuração
-  <pasta do jogo>\addons\CustomCursors\cursors\gw2-facetado\  este pacote
+  <pasta do jogo>\addons\CustomCursors\cursors\divine-prisma\  este pacote
 
-Se a janela não achar a pasta, clique em "Procurar...". Não sabe onde está?
-Botão direito no atalho do Guild Wars 2 > "Abrir local do arquivo". Na Steam:
-botão direito no jogo > Gerenciar > Procurar arquivos locais.
+Antes o pacote se chamava gw2-facetado. Se essa pasta antiga existir, o
+instalador troca pela nova e ajusta o settings.json sozinho.
+
+Se a janela não achar a pasta do jogo, clique em "Procurar...". Não sabe
+onde ela está? Botão direito no atalho do Guild Wars 2 > "Abrir local do
+arquivo". Na Steam: botão direito no jogo > Gerenciar > Procurar arquivos
+locais.
 
 
 É SEGURO?
 ---------
-- Não há nenhum .exe. Os .bat chamam os scripts PowerShell da pasta
+- Não tem nenhum .exe. Os .bat chamam os scripts PowerShell da pasta
   _arquivos\instalador, que você pode abrir no Bloco de Notas e ler antes.
-- Os scripts não usam internet, não pedem administrador e só mexem em:
+- Os scripts não usam a internet, não pedem administrador e só mexem em:
     addons\CustomCursors\settings.json   (com backup)
-    addons\CustomCursors\cursors\gw2-facetado\
+    addons\CustomCursors\cursors\divine-prisma\
 - O .bat usa "-ExecutionPolicy Bypass" porque o Windows bloqueia scripts
-  baixados da internet. Essa opção vale só para este script, nesta execução.
-- Confira o SHA-256 do ZIP com o publicado na página de download:
-    certutil -hashfile gw2-facetado-kit.zip SHA256
+  baixados da internet. A opção vale só para este script, só nesta vez.
+- Compare o SHA-256 do ZIP com o que está na página de download:
+    certutil -hashfile divine-prisma-kit.zip SHA256
 
 
 SEM SCRIPT (INSTALAÇÃO MANUAL)
 ------------------------------
-1. Copie a pasta _arquivos\gw2-facetado para
+1. Copie a pasta _arquivos\divine-prisma para
    <pasta do jogo>\addons\CustomCursors\cursors\
 2. Copie _arquivos\manual (sem script)\<Cor>\<tamanho> px\settings.json para
    <pasta do jogo>\addons\CustomCursors\
    ATENÇÃO: isso substitui o settings.json inteiro. Se você já tinha
    cursores configurados no addon, guarde uma cópia do seu antes.
-Ou escolha cada cursor no menu do Custom Cursors, dentro do jogo; os pontos
-de clique de cada arquivo estão em _arquivos\gw2-facetado\hotspots.json.
+Outra opção é escolher cada cursor no menu do Custom Cursors, dentro do
+jogo. O ponto de clique de cada arquivo está em
+_arquivos\divine-prisma\hotspots.json.
 
 
 AVISOS
 ------
-- Contraste Alto: o jogo usa outro conjunto de cursores nesse modo e, por
-  enquanto, só a seta padrão foi identificada. Os outros aparecem no padrão
-  do jogo. Se você usa o modo Alto, avise na página do projeto.
-- O Custom Cursors pode mostrar um aviso no log quando nem todos os cursores
-  do jogo têm arquivo definido (issue #4 do addon). É só um aviso.
-- Addons são de terceiros: a ArenaNet não aprova nem revisa nenhum, e o uso é
-  por sua conta. Este pacote só troca a aparência do cursor.
-- Este pacote não é afiliado à ArenaNet, à NCSOFT nem ao autor do Custom Cursors.
+- Contraste Alto: nesse modo o jogo usa outro conjunto de cursores, e até
+  agora só a seta padrão foi identificada. Os outros aparecem no padrão do
+  jogo. Se você joga no modo Alto, avise na página do projeto.
+- O Custom Cursors pode mostrar um aviso no log quando nem todo cursor do
+  jogo tem arquivo definido (issue #4 do addon). É só um aviso.
+- Addons são de terceiros. A ArenaNet não aprova nem revisa nenhum, e o uso
+  é por sua conta. Este pacote só troca a aparência do cursor.
+- Este pacote não é afiliado à ArenaNet, à NCSOFT nem ao autor do Custom
+  Cursors.
 
 
 PROJETO E LICENÇA
 -----------------
-Página, código-fonte e problemas: https://github.com/divinegw/gw2-facetado
-Desenhos: CC BY-NC 4.0 (use e modifique com crédito, sem vender).
+Página, código-fonte e problemas: https://github.com/divinegw/divine-prisma
+Desenhos: CC BY-NC 4.0 (pode usar e modificar dando crédito, sem vender).
 Scripts: MIT.

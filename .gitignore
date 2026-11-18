@@ -1,3 +1,8 @@
 dist/
+pack/
+arquivo/
 __pycache__/
 *.pyc
+# scripts locais (caminho do jogo / versão 1)
+scripts/gw2_cursors_apply.py
+scripts/gw2_cursors_v1_setas.py

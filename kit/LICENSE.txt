@@ -1,4 +1,4 @@
-gw2-facetado usa duas licenças / gw2-facetado uses two licenses.
+Divine Prisma usa duas licenças / Divine Prisma uses two licenses.
 
 1. DESENHOS / ARTWORK
    Os cursores gerados (PNG e .cur) e a prévia (docs/previa.png):
@@ -9,9 +9,9 @@ gw2-facetado usa duas licenças / gw2-facetado uses two licenses.
    https://creativecommons.org/licenses/by-nc/4.0/legalcode
 
    Você pode usar, copiar, modificar e redistribuir, desde que dê crédito
-   ("gw2-facetado, github.com/divinegw/gw2-facetado") e não venda.
+   ("Divine Prisma, github.com/divinegw/divine-prisma") e não venda.
    You may use, copy, modify and share them with credit
-   ("gw2-facetado, github.com/divinegw/gw2-facetado"), but not commercially.
+   ("Divine Prisma, github.com/divinegw/divine-prisma"), but not commercially.
 
 2. CÓDIGO / CODE
    Os scripts em scripts/ e kit/_instalador/:

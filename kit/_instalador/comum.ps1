@@ -1,22 +1,27 @@
-# gw2-facetado: funções usadas pela janela (janela.ps1) e pelos scripts de linha de comando.
+# Divine Prisma: funções usadas pela janela (janela.ps1) e pelos scripts de linha de comando.
 # Shared helpers for janela.ps1 / instalar.ps1 / desinstalar.ps1.
 #
 # O que este código faz / what this code does:
 #   - procura a pasta do Guild Wars 2 lendo, sem alterar nada: atalhos do jogo,
 #     a lista de programas instalados, lugares comuns e bibliotecas da Steam
 #   - os caminhos gravados no settings.json são relativos à pasta do jogo
-#     ("addons/CustomCursors/cursors/gw2-facetado/..."), então funcionam
+#     ("addons/CustomCursors/cursors/divine-prisma/..."), então funcionam
 #     em qualquer PC, esteja o jogo onde estiver
 #   - lê e grava SÓ addons\CustomCursors\settings.json, sempre com backup antes
 #     (se o arquivo ainda não existe, cria um novo)
-#   - copia/remove SÓ a pasta addons\CustomCursors\cursors\gw2-facetado
+#   - copia/remove SÓ a pasta addons\CustomCursors\cursors\divine-prisma
+#     (e a antiga, gw2-facetado, que o pack usava antes de mudar de nome)
 # Nada é baixado, nada é enviado, nada roda como administrador.
 
 $ErrorActionPreference = 'Stop'
 $PT = (Get-Culture).Name -like 'pt*'
-$PACK_REL = 'addons/CustomCursors/cursors/gw2-facetado'
+$PACK_NOME = 'divine-prisma'
+$PACK_REL = "addons/CustomCursors/cursors/$PACK_NOME"
+# nome antigo do pack: o instalador migra e o desinstalador também limpa
+# old pack name: the installer migrates it and the uninstaller cleans it up too
+$PACK_REL_ANTIGO = 'addons/CustomCursors/cursors/gw2-facetado'
 $KIT_DIR = Split-Path $PSScriptRoot -Parent
-$PACK_SRC = Join-Path $KIT_DIR 'gw2-facetado'
+$PACK_SRC = Join-Path $KIT_DIR $PACK_NOME
 $CORES = @('roxo', 'ciano', 'dourado', 'prata', 'rosa', 'verde', 'vermelho')
 $TAMANHOS = @(32, 48, 64, 96, 128)
 # Sem halo (contraste Desligado) o desenho ocupa o quadro todo; com halo (Baixo/Alto)
@@ -138,7 +143,8 @@ function Get-GameStatus([string]$game) {
         Nexus         = (Test-Path -LiteralPath (Join-Path $addons 'Nexus')) -or (Test-Path -LiteralPath (Join-Path $game 'd3d11.dll'))
         CustomCursors = Test-CustomCursors $addons
         Settings      = Test-Path -LiteralPath (Join-Path $addons 'CustomCursors\settings.json')
-        Pack          = Test-Path -LiteralPath (Join-Path $addons 'CustomCursors\cursors\gw2-facetado')
+        Pack          = (Test-Path -LiteralPath (Join-Path $game ($PACK_REL -replace '/', '\'))) -or
+                        (Test-Path -LiteralPath (Join-Path $game ($PACK_REL_ANTIGO -replace '/', '\')))
     }
 }
 
@@ -167,7 +173,7 @@ function Read-Settings([string]$p) {
 }
 
 function Backup-Settings([string]$p) {
-    $b = "$p.backup-gw2-facetado-" + (Get-Date -Format 'yyyyMMdd-HHmmss')
+    $b = "$p.backup-$PACK_NOME-" + (Get-Date -Format 'yyyyMMdd-HHmmss')
     Copy-Item -LiteralPath $p -Destination $b
     return $b
 }
@@ -218,7 +224,7 @@ function Get-InstallPlan([string]$Cor, [int]$Tamanho, [bool]$AliadoVerde) {
 
 function Install-Pack([string]$game, [string]$Cor, [int]$Tamanho, [bool]$AliadoVerde, [bool]$Forcar = $false) {
     if (-not (Test-Path -LiteralPath (Join-Path $PACK_SRC 'hotspots.json'))) {
-        Stop-Kit 'A pasta _arquivos\gw2-facetado está faltando. Extraia o ZIP inteiro antes de instalar.' 'The _arquivos\gw2-facetado folder is missing. Extract the whole ZIP before installing.'
+        Stop-Kit "A pasta _arquivos\$PACK_NOME está faltando. Extraia o ZIP inteiro antes de instalar." "The _arquivos\$PACK_NOME folder is missing. Extract the whole ZIP before installing."
     }
     if (-not (Test-GameDir $game)) { Stop-Kit "Não achei Gw2-64.exe em: $game" "Gw2-64.exe not found in: $game" }
     Assert-GameClosed
@@ -230,7 +236,7 @@ function Install-Pack([string]$game, [string]$Cor, [int]$Tamanho, [bool]$AliadoV
                   "1) Install Nexus (raidcore.gg/Nexus).`n2) Start the game, press Ctrl+O, go to Addons > Library and install 'Custom Cursors'.`n3) Close the game and install this pack.")
     }
     # pasta do jogo protegida (ex.: Program Files sem permissão) / protected game folder
-    $teste = Join-Path $game 'addons\.gw2-facetado-teste'
+    $teste = Join-Path $game "addons\.$PACK_NOME-teste"
     try {
         $null = New-Item -ItemType Directory -Force -Path (Split-Path $teste -Parent)
         [IO.File]::WriteAllText($teste, 'x'); Remove-Item -LiteralPath $teste -Force
@@ -274,7 +280,28 @@ function Install-Pack([string]$game, [string]$Cor, [int]$Tamanho, [bool]$AliadoV
         Set-CursorEntry $e 1 "$PACK_REL/$($p.rel)" $p.lado $p.hx $p.hy
     }
     $cfg.cursors = @($lista | Sort-Object { [int64]$_.cursor_id })
+    # nome antigo: extras escolhidos à mão no jogo passam a apontar para a pasta nova
+    # old name: extras picked by hand in game now point to the new folder
+    $migrados = 0
+    foreach ($secao in @('cursors', 'special_cursors')) {
+        if (-not $cfg.PSObject.Properties[$secao]) { continue }
+        foreach ($e in @($cfg.$secao)) {
+            if ($e -and "$($e.file_path)" -like "$PACK_REL_ANTIGO/*") {
+                $e.file_path = $PACK_REL + "$($e.file_path)".Substring($PACK_REL_ANTIGO.Length); $migrados++
+            }
+        }
+    }
     Write-Settings $cfg $settings $backup
+    $antiga = Join-Path $game ($PACK_REL_ANTIGO -replace '/', '\')
+    if (Test-Path -LiteralPath $antiga) {
+        try {
+            Remove-Item -LiteralPath $antiga -Recurse -Force
+            Say "Pasta do nome antigo (gw2-facetado) trocada pela nova ($PACK_NOME)." "Old-name folder (gw2-facetado) replaced by the new one ($PACK_NOME)." 'DarkGray'
+        } catch {
+            Say "A pasta antiga ficou (está aberta em algum programa?). Pode apagar à mão: $antiga" "The old folder is still there (open in another program?). You can delete it by hand: $antiga" 'Yellow'
+        }
+    }
+    if ($migrados) { Say "$migrados cursores extras passaram para a pasta nova." "$migrados extra cursors moved to the new folder." 'DarkGray' }
 
     $sem = ($plano | Where-Object modo -eq 'desligado' | Select-Object -First 1).lado
     Say ("Instalado: $Cor, $Tamanho px com halo / $sem px sem halo, $($plano.Count) cursores." +
@@ -288,14 +315,14 @@ function Uninstall-Pack([string]$game, [bool]$ApagarPasta) {
     if (-not (Test-GameDir $game)) { Stop-Kit "Não achei Gw2-64.exe em: $game" "Gw2-64.exe not found in: $game" }
     Assert-GameClosed
     $settings = Get-SettingsPath $game
-    $pasta = Join-Path $game ($PACK_REL -replace '/', '\')
+    $pastas = @($PACK_REL, $PACK_REL_ANTIGO) | ForEach-Object { Join-Path $game ($_ -replace '/', '\') }
     $n = 0
     if (Test-Path -LiteralPath $settings) {
         $cfg = Read-Settings $settings
         $nossos = @()
         foreach ($secao in @('cursors', 'special_cursors')) {
             if ($cfg.PSObject.Properties[$secao]) {
-                $nossos += @($cfg.$secao) | Where-Object { "$($_.file_path)" -like "$PACK_REL/*" }
+                $nossos += @($cfg.$secao) | Where-Object { "$($_.file_path)" -like "$PACK_REL/*" -or "$($_.file_path)" -like "$PACK_REL_ANTIGO/*" }
             }
         }
         $n = $nossos.Count
@@ -307,7 +334,8 @@ function Uninstall-Pack([string]$game, [bool]$ApagarPasta) {
         }
     }
     Say "$n cursores voltaram ao padrão do jogo." "$n cursors reset to the game default." 'Green'
-    if ($ApagarPasta -and (Test-Path -LiteralPath $pasta)) {
+    foreach ($pasta in $pastas) {
+        if (-not $ApagarPasta -or -not (Test-Path -LiteralPath $pasta)) { continue }
         try { Remove-Item -LiteralPath $pasta -Recurse -Force; Say "Pasta apagada: $pasta" "Folder deleted: $pasta" 'Green' }
         catch { Say "Não deu para apagar a pasta (está aberta em algum programa?). Apague à mão: $pasta" "Could not delete the folder (open in another program?). Delete it by hand: $pasta" 'Yellow' }
     }

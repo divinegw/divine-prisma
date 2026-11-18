@@ -1,4 +1,4 @@
-"""Converte o pacote gw2-facetado (PNGs) em cursores .cur do Windows.
+"""Converte o pacote Divine Prisma (PNGs) em cursores .cur do Windows.
 
 Saída por cor: <Cor>/todos os tamanhos/ tem um .cur por tipo com os 5 tamanhos
 (32, 48, 64, 96, 128) dentro, cada um com o seu ponto de clique tirado do

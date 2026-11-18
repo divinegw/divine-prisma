@@ -1,4 +1,4 @@
-"""Pacote original de cursores no estilo facetado/metálico do GW2 (v2).
+"""Pacote original de cursores no estilo prismático/metálico do GW2 (v2).
 
 Gera todos os tipos de cursor (seta, fala, engrenagem, mãos, alvos, martelo,
 lupa, redimensionar, craft...) em 7 cores, versão normal e com brilho, em
@@ -164,7 +164,7 @@ def scalar_gradient(t0, t1, p0, p1):
 
 
 def bevel_tone(m, n=22, hi=0.80, lo=0.40, strength=0.45):
-    """Tom 0..1 de um relevo chanfrado (topo plano + bordas facetadas)."""
+    """Tom 0..1 de um relevo chanfrado (topo plano + bordas prismáticas)."""
     n = max(4, int(round(n * XF[0])))
     cur = to_img(m)
     acc = m.copy()
@@ -311,7 +311,7 @@ def cycle_parts(c, r, t, pal=None, head=(0.09, 0.13)):
 
 
 HAND_TILT = {"aberta": -10, "fechada": -18, "apontar": -6}
-# estilo das mãos: atual | A (facetada) | B (manopla) | C (luva clássica)
+# estilo das mãos: atual | A (prismática) | B (manopla) | C (luva clássica)
 # dedão (e indicador estendido) — v0 é o instalado até 13/11
 THUMB_VARIANTS = {
     "0": {"thumb": [(0.400, 0.72), (0.300, 0.645), (0.210, 0.545), (0.170, 0.465)], "thumb_r": (.064, .046)},
@@ -387,7 +387,7 @@ def hand_parts(kind, s=1.0, dx=0.0, dy=0.0):
                 cv.taper(a, b, ra, rb)
         return [bevel_part(draw, n=30, rimk=9, hi=0.86, lo=0.42, strength=0.5)]
 
-    # ---- A: luva facetada (low-poly, mesma lógica de luz das setas)
+    # ---- A: luva prismática (low-poly, mesma lógica de luz das setas)
     def finger_facet(pts, r0, r1):
         facets = []
         for i, n, a, b, ra, rb in segs(pts, r0, r1):

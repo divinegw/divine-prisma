@@ -1,5 +1,5 @@
-# gw2-facetado: instalador de linha de comando (a janela, janela.ps1, faz o mesmo).
-# gw2-facetado: command-line installer (the window, janela.ps1, does the same).
+# Divine Prisma: instalador de linha de comando (a janela, janela.ps1, faz o mesmo).
+# Divine Prisma: command-line installer (the window, janela.ps1, does the same).
 #
 #   instalar.ps1 -Cor rosa [-Tamanho 48] [-AliadoVerde] [-PastaJogo "D:\Guild Wars 2"] [-SemPerguntas]
 #
