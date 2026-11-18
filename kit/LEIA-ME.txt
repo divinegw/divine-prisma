@@ -6,82 +6,74 @@ Pacote de cursores original, desenhado no estilo facetado e metálico do jogo.
 Prévia de todas as cores: previa-todas-as-cores.png
 
 
-O QUE TEM AQUI
---------------
-  Ciano\ Dourado\ Prata\ Rosa\ Roxo\ Verde\ Vermelho\   uma pasta por cor
-      previa-<cor>.png              os desenhos daquela cor e os 5 tamanhos
-      Instalar <Cor> 32 px.bat      um instalador para cada tamanho
-      ...
-      Instalar <Cor> 128 px.bat
-      Desinstalar.bat
-      manual (sem script)\          settings.json pronto, um por tamanho
-  Desinstalar.bat                   o mesmo desinstalador, aqui na raiz
-  _arquivos\                        o pacote de imagens e os scripts
-                                    (não precisa abrir)
+INSTALAR EM 3 PASSOS
+--------------------
+1. Precisa do Nexus (raidcore.gg/Nexus) e do addon "Custom Cursors"
+   (no jogo: Ctrl+O > Addons > Library > Custom Cursors > Install).
+2. Extraia o ZIP inteiro (botão direito > Extrair tudo) e feche o jogo.
+3. Dê dois cliques em "Instalar.bat". Na janela, escolha a cor e o tamanho
+   e clique em Instalar.
+
+A janela acha a pasta do jogo sozinha e mostra se o Nexus e o Custom Cursors
+estão lá. Para trocar de cor ou de tamanho, abra o Instalar.bat de novo.
+Não precisa mais abrir o jogo antes: se o addon ainda não tem configuração,
+o instalador cria uma.
 
 
-ANTES DE INSTALAR
------------------
-1. Tenha o Nexus (raidcore.gg/Nexus) instalado.
-2. Na biblioteca de addons do Nexus, instale o "Custom Cursors" (jordanrye).
-3. Abra o jogo uma vez e feche. Isso cria o arquivo de configuração do addon.
+QUAL TAMANHO?
+-------------
+48 px é o padrão. Em telas grandes ou com a interface do jogo ampliada,
+experimente 64 px; 96 e 128 px são para quem quer o cursor bem grande.
+A janela mostra a prévia em tamanho real.
+
+O jogo tem três modos de "Contraste do cursor" (Opções > Geral >
+Acessibilidade): Desligar, Baixo e Alto. Cada modo usa cursores diferentes
+(sem halo, com halo e com anel). O instalador cobre os três e ajusta o
+tamanho para o cursor ficar do mesmo tamanho na tela em qualquer modo.
+No modo Alto, por enquanto só a seta padrão é trocada (veja AVISOS).
 
 
-INSTALAR
---------
-1. Extraia o ZIP inteiro em qualquer pasta.
-2. Abra a pasta da cor que você quer e veja a prévia (previa-<cor>.png).
-3. Com o jogo FECHADO, dê dois cliques em "Instalar <Cor> <tamanho> px.bat".
-4. Confirme a pasta do jogo e confirme a instalação.
+O QUE O INSTALADOR MUDA
+-----------------------
+- Só os cursores conhecidos do jogo: seta, conversar, interagir, mãos,
+  reviver, mira, inspecionar (lupa), kit de reciclagem e redimensionar.
+- A seta de inimigo continua vermelha. A seta de aliado (aparece sobre NPCs
+  amigos) fica na cor escolhida; marque "Seta de aliado em verde" na janela
+  se preferir o verde do jogo.
+- Não mexe nos outros cursores nem nas outras opções do addon.
+- Faz backup do settings.json antes (settings.json.backup-gw2-facetado-...).
 
-Qual tamanho? 48 px é o padrão. Em telas grandes ou com a interface do jogo
-ampliada, experimente 64 px; 96 e 128 px são para quem quer o cursor bem
-grande. Para trocar de cor ou de tamanho, é só rodar outro "Instalar".
-
-O instalador:
-- muda só os cursores conhecidos do jogo (seta, conversar, interagir, mãos,
-  reviver, mira, zoom, reciclar, redimensionar), nos dois modos de contraste
-  do jogo (normal e alto, com halo); a seta de inimigo continua vermelha e a
-  de aliado, verde;
-- não mexe nos outros cursores nem nas outras opções do addon;
-- faz backup do settings.json antes (settings.json.backup-gw2-facetado-...).
-
-Os desenhos que o jogo não usa por padrão (seta dupla, martelo, girar, alvo,
-alvo de área, mão de apontar) também ficam instalados e podem ser escolhidos
-no menu do Custom Cursors, dentro do jogo.
+Desenhos que o jogo não usa (seta dupla, martelo, girar, alvo, alvo de área,
+mão de apontar) ficam na pasta do pacote como extras. O jogo não tem cursor
+de martelo: o kit de reciclagem (inclusive os infinitos) usa a seta com
+setas circulares verdes/vermelhas, que já é trocada pelo instalador. Para usar
+um extra, escolha-o no menu do Custom Cursors, dentro do jogo.
 
 
 DESINSTALAR
 -----------
-Com o jogo fechado, dê dois cliques em "Desinstalar.bat" (na raiz ou em
-qualquer pasta de cor: é o mesmo). Os cursores do gw2-facetado voltam ao
-padrão do jogo e, se você quiser, a pasta do pacote é apagada.
+Abra o Instalar.bat e clique em Desinstalar, ou dê dois cliques em
+"Desinstalar.bat". Os cursores do gw2-facetado voltam ao padrão do jogo e a
+pasta do pacote é apagada. Os outros cursores ficam como estão.
 
 
 ONDE FICA CADA COISA
 --------------------
-O Custom Cursors fica DENTRO da pasta do jogo, que muda de PC para PC
-(ex.: C:\Program Files\Guild Wars 2, D:\Jogos\Guild Wars 2, ou na Steam
-...\steamapps\common\Guild Wars 2). É a pasta que tem o Gw2-64.exe.
+O Custom Cursors fica DENTRO da pasta do jogo (a que tem o Gw2-64.exe), que
+muda de PC para PC (ex.: C:\Program Files\Guild Wars 2, D:\Jogos\Guild Wars 2,
+ou na Steam ...\steamapps\common\Guild Wars 2).
 
   <pasta do jogo>\addons\CustomCursors\settings.json         configuração
   <pasta do jogo>\addons\CustomCursors\cursors\gw2-facetado\  este pacote
 
-O instalador acha a pasta sozinho: procura nos atalhos do jogo, na lista de
-programas instalados, nos lugares comuns e na Steam, e sempre pergunta antes
-de usar. Se não achar, abre uma janela para você escolher.
-
-Não sabe onde está? Botão direito no atalho do Guild Wars 2 > "Abrir local
-do arquivo". Na Steam: botão direito no jogo > Gerenciar > Procurar arquivos
-locais. Dica: extraia este ZIP dentro da pasta do jogo e ele acha direto.
-
-Os caminhos no settings.json são relativos à pasta do jogo, então funcionam
-em qualquer PC, esteja o jogo onde estiver.
+Se a janela não achar a pasta, clique em "Procurar...". Não sabe onde está?
+Botão direito no atalho do Guild Wars 2 > "Abrir local do arquivo". Na Steam:
+botão direito no jogo > Gerenciar > Procurar arquivos locais.
 
 
 É SEGURO?
 ---------
-- Não há nenhum .exe. Os .bat têm uma linha só e chamam os scripts da pasta
+- Não há nenhum .exe. Os .bat chamam os scripts PowerShell da pasta
   _arquivos\instalador, que você pode abrir no Bloco de Notas e ler antes.
 - Os scripts não usam internet, não pedem administrador e só mexem em:
     addons\CustomCursors\settings.json   (com backup)
@@ -96,7 +88,7 @@ SEM SCRIPT (INSTALAÇÃO MANUAL)
 ------------------------------
 1. Copie a pasta _arquivos\gw2-facetado para
    <pasta do jogo>\addons\CustomCursors\cursors\
-2. Copie <Cor>\manual (sem script)\<tamanho> px\settings.json para
+2. Copie _arquivos\manual (sem script)\<Cor>\<tamanho> px\settings.json para
    <pasta do jogo>\addons\CustomCursors\
    ATENÇÃO: isso substitui o settings.json inteiro. Se você já tinha
    cursores configurados no addon, guarde uma cópia do seu antes.
@@ -106,8 +98,11 @@ de clique de cada arquivo estão em _arquivos\gw2-facetado\hotspots.json.
 
 AVISOS
 ------
-- O Custom Cursors pode mostrar um aviso quando nem todos os cursores do jogo
-  têm arquivo definido (issue #4 do addon). É só um aviso.
+- Contraste Alto: o jogo usa outro conjunto de cursores nesse modo e, por
+  enquanto, só a seta padrão foi identificada. Os outros aparecem no padrão
+  do jogo. Se você usa o modo Alto, avise na página do projeto.
+- O Custom Cursors pode mostrar um aviso no log quando nem todos os cursores
+  do jogo têm arquivo definido (issue #4 do addon). É só um aviso.
 - Addons são de terceiros: a ArenaNet não aprova nem revisa nenhum, e o uso é
   por sua conta. Este pacote só troca a aparência do cursor.
 - Este pacote não é afiliado à ArenaNet, à NCSOFT nem ao autor do Custom Cursors.

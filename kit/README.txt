@@ -5,87 +5,79 @@ An original cursor pack drawn in the game's faceted, metallic style.
 21 drawings, 7 colours, plain and glow versions, 5 sizes.
 Preview of every colour: previa-todas-as-cores.png
 
-Colour folder names (Portuguese): Roxo = purple, Ciano = cyan,
-Dourado = gold, Prata = silver, Rosa = pink, Verde = green, Vermelho = red.
-"brilho" = glow (white outline). "Instalar" = install, "Desinstalar" =
-uninstall, "previa" = preview, "manual (sem script)" = manual (no script).
+Portuguese names: "Instalar" = install, "Desinstalar" = uninstall,
+"previa" = preview, "brilho" = glow, "manual (sem script)" = manual (no script).
+The installer window is in English on non-Portuguese Windows.
 
 
-WHAT'S INSIDE
--------------
-  Ciano\ Dourado\ Prata\ Rosa\ Roxo\ Verde\ Vermelho\   one folder per colour
-      previa-<colour>.png           that colour's drawings and the 5 sizes
-      Instalar <Colour> 32 px.bat   one installer per size
-      ...
-      Instalar <Colour> 128 px.bat
-      Desinstalar.bat
-      manual (sem script)\          ready-made settings.json, one per size
-  Desinstalar.bat                   the same uninstaller, at the top level
-  _arquivos\                        image pack and scripts (no need to open)
-
-
-BEFORE YOU INSTALL
+INSTALL IN 3 STEPS
 ------------------
-1. Install Nexus (raidcore.gg/Nexus).
-2. From the Nexus addon library, install "Custom Cursors" (jordanrye).
-3. Start the game once and close it. This creates the addon's settings file.
+1. You need Nexus (raidcore.gg/Nexus) and the "Custom Cursors" addon
+   (in game: Ctrl+O > Addons > Library > Custom Cursors > Install).
+2. Extract the whole ZIP (right-click > Extract All) and close the game.
+3. Double-click "Instalar.bat". In the window, pick a colour and a size and
+   click Install.
+
+The window finds the game folder on its own and shows whether Nexus and
+Custom Cursors are there. To switch colour or size, open Instalar.bat again.
+No need to start the game first: if the addon has no settings yet, the
+installer creates them.
 
 
-INSTALL
--------
-1. Extract the whole ZIP anywhere.
-2. Open the folder of the colour you want and check its preview.
-3. With the game CLOSED, double-click "Instalar <Colour> <size> px.bat".
-4. Confirm the game folder and confirm the install.
+WHICH SIZE?
+-----------
+48 px is the default. On large screens or with a larger game UI, try 64 px;
+96 and 128 px are for a really big cursor. The window shows an actual-size
+preview.
 
-Which size? 48 px is the default. On large screens or with a larger game UI,
-try 64 px; 96 and 128 px are for a really big cursor. To switch colour or
-size, just run another "Instalar".
+The game has three "Cursor contrast" modes (Options > General >
+Accessibility): Off, Low and High. Each mode uses different cursors (no halo,
+halo, ring). The installer covers all three and adjusts sizes so the cursor
+looks the same size in any mode. In High mode only the default arrow is
+replaced for now (see NOTES).
 
-The installer:
-- changes only the known game cursors (arrow, talk, interact, hands, revive,
-  crosshair, zoom, recycle, resize) in both of the game's cursor contrast
-  modes (normal and high, with halo); the enemy arrow stays red and the
-  ally arrow green;
-- leaves every other cursor and addon option alone;
-- backs up settings.json first (settings.json.backup-gw2-facetado-...).
 
-Drawings the game doesn't use by default (double arrow, hammer, rotate,
-target, area target, pointing hand) are installed too and can be picked from
-the Custom Cursors menu in game.
+WHAT THE INSTALLER CHANGES
+--------------------------
+- Only the known game cursors: arrow, talk, interact, hands, revive,
+  crosshair, inspect (magnifier), salvage kit and resize.
+- The enemy arrow stays red. The ally arrow (shown over friendly NPCs) uses
+  the chosen colour; tick "Ally arrow in green" in the window to keep the
+  game's green.
+- Every other cursor and addon option is left alone.
+- settings.json is backed up first (settings.json.backup-gw2-facetado-...).
+
+Drawings the game does not use (double arrow, hammer, rotate, target, area
+target, pointing hand) are installed as extras. The game has no hammer
+cursor: salvage kits (infinite ones too) use the arrow with green/red circular
+arrows, which the installer already replaces. To use an extra, pick it in the
+Custom Cursors menu in game.
 
 
 UNINSTALL
 ---------
-With the game closed, double-click "Desinstalar.bat" (top level or any colour
-folder: it's the same). The gw2-facetado cursors go back to the game default
-and, if you want, the pack folder is deleted.
+Open Instalar.bat and click Uninstall, or double-click "Desinstalar.bat".
+The gw2-facetado cursors go back to the game default and the pack folder is
+deleted. Other cursors stay as they are.
 
 
 WHERE THINGS ARE
 ----------------
-Custom Cursors lives INSIDE your game folder, which differs per PC
-(e.g. C:\Program Files\Guild Wars 2, D:\Games\Guild Wars 2, or on Steam
-...\steamapps\common\Guild Wars 2). It is the folder with Gw2-64.exe.
+Custom Cursors lives INSIDE your game folder (the one with Gw2-64.exe), which
+differs per PC (e.g. C:\Program Files\Guild Wars 2, D:\Games\Guild Wars 2, or
+on Steam ...\steamapps\common\Guild Wars 2).
 
   <game folder>\addons\CustomCursors\settings.json         settings
   <game folder>\addons\CustomCursors\cursors\gw2-facetado\  this pack
 
-The installer finds it on its own (game shortcuts, installed-programs list,
-common locations, Steam) and always asks first. If nothing is found, it opens
-a folder picker.
-
-Not sure where it is? Right-click the Guild Wars 2 shortcut > "Open file
-location". On Steam: right-click the game > Manage > Browse local files.
-Tip: extract this ZIP inside the game folder and it is found right away.
-
-Paths in settings.json are relative to the game folder, so they work on any
-PC, wherever the game is installed.
+If the window cannot find it, click "Browse...". Not sure where it is?
+Right-click the Guild Wars 2 shortcut > "Open file location". On Steam:
+right-click the game > Manage > Browse local files.
 
 
 IS IT SAFE?
 -----------
-- There is no .exe. Each .bat is a single line that runs the scripts in
+- There is no .exe. The .bat files run the PowerShell scripts in
   _arquivos\instalador; open them in Notepad and read them first.
 - The scripts use no internet, need no admin rights, and only touch:
     addons\CustomCursors\settings.json   (backed up)
@@ -99,7 +91,7 @@ IS IT SAFE?
 NO SCRIPT (MANUAL INSTALL)
 --------------------------
 1. Copy _arquivos\gw2-facetado into <game folder>\addons\CustomCursors\cursors\
-2. Copy <Colour>\manual (sem script)\<size> px\settings.json into
+2. Copy _arquivos\manual (sem script)\<Colour>\<size> px\settings.json into
    <game folder>\addons\CustomCursors\
    WARNING: this replaces the whole settings.json. If you already had
    cursors set up in the addon, keep a copy of yours first.
@@ -109,7 +101,10 @@ every file are in _arquivos\gw2-facetado\hotspots.json.
 
 NOTES
 -----
-- Custom Cursors may show a warning when not every game cursor has a file set
+- High cursor contrast: the game uses another set of cursors in that mode and
+  only the default arrow has been identified so far. The others show the game
+  default. If you play in High mode, please report it on the project page.
+- Custom Cursors may log a warning when not every game cursor has a file set
   (addon issue #4). It is only a warning.
 - Addons are third-party: ArenaNet does not review or approve any of them, and
   you use them at your own risk. This pack only changes how the cursor looks.

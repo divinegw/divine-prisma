@@ -2,9 +2,9 @@ r"""Monta o kit de lançamento do gw2-facetado.
 
 Saída em <dist>:
   gw2-facetado-kit\          pasta do kit (instalador Nexus/Custom Cursors)
-    <Cor>\                   uma pasta por cor: prévia, um .bat por tamanho,
-                             Desinstalar.bat e settings.json manuais por tamanho
-    _arquivos\               pacote PNG e scripts do instalador
+    Instalar.bat             abre a janela do instalador (cor, tamanho, instalar/desinstalar)
+    Desinstalar.bat          desinstalador de linha de comando
+    _arquivos\               pacote PNG, scripts, prévias por cor e settings.json manuais
   gw2-facetado-kit.zip       o mesmo, zipado
   gw2-facetado-cur.zip       os .cur por cor (YoloMouse e afins), se existirem
   SHA256.txt                 hashes dos ZIPs
@@ -21,7 +21,7 @@ TAMANHOS = [32, 48, 64, 96, 128]
 KIT = os.path.join(DIST, "gw2-facetado-kit")
 ARQ = os.path.join(KIT, "_arquivos")
 PACK_REL = "addons/CustomCursors/cursors/gw2-facetado"
-TIPOS = sorted(d for d in os.listdir(PACK) if os.path.isdir(os.path.join(PACK, d)))
+TIPOS = sorted(d for d in os.listdir(PACK) if os.path.isdir(os.path.join(PACK, d)) and not d.startswith("."))
 
 
 def write(path, text, enc):
@@ -97,7 +97,7 @@ def previa(cor, nome, destino):
             w = d.textlength(tipo, font=f_peq)
             d.text((cx + (cel - w) / 2, cy + 66), tipo, font=f_peq, fill=cor_txt)
     y += linhas * (cel + 22) + 20
-    d.text((M, y), "Inimigo continua vermelho e aliado verde em todas as cores. "
+    d.text((M, y), "Inimigo continua vermelho; a seta de aliado segue a cor (ou verde, opção do instalador). "
                    "github.com/divinegw/gw2-facetado", font=f_peq, fill=SUB)
     img.save(destino, optimize=True)
 
@@ -111,7 +111,7 @@ if "--so-previas" in sys.argv:
 # ---------------------------------------------------------------- kit
 if os.path.isdir(KIT):
     shutil.rmtree(KIT)
-shutil.copytree(PACK, os.path.join(ARQ, "gw2-facetado"))
+shutil.copytree(PACK, os.path.join(ARQ, "gw2-facetado"), ignore=shutil.ignore_patterns(".*"))
 
 # scripts: PowerShell 5.1 precisa de BOM para ler acentos em UTF-8
 for name in os.listdir(os.path.join(SRC, "_instalador")):
@@ -130,14 +130,23 @@ GENERAL = {"enable_combat_cursor": False, "enable_hotspot_preview": False, "enab
 EMPTY = {"file_format": 0, "file_path": "", "height": 0, "hotspot_x": 0, "hotspot_y": 0, "width": 0}
 
 
+ESCALA_SEM_HALO = 0.8  # igual a comum.ps1: sem halo (contraste Desligado) usa 80% do tamanho
+
+
 def manual(cor, tam):
+    """Mesma regra do Install-Pack (comum.ps1), com a seta de aliado na cor escolhida."""
     cursors = []
     for m in mapa:
-        variante = cor + m["variante"][3:] if m["variante"].startswith("cor") else m["variante"]
-        rel = f'{m["tipo"]}/gw2-{m["tipo"]}-{variante}-{tam}.png'
+        v = m["variante"]
+        for pref in ("cor", "aliado"):
+            if v.startswith(pref):
+                v = cor + v[len(pref):]
+        rel = f'{m["tipo"]}/gw2-{m["tipo"]}-{v}-{tam}.png'
         hx, hy = hot[rel]["hotspot"]
+        lado = round(tam * ESCALA_SEM_HALO) if m["modo"] == "desligado" else tam
+        k = lado / tam
         cursors.append({"cursor_id": m["id"], "file_format": 1, "file_path": f"{PACK_REL}/{rel}",
-                        "height": tam, "hotspot_x": hx, "hotspot_y": hy, "width": tam})
+                        "height": lado, "hotspot_x": round(hx * k), "hotspot_y": round(hy * k), "width": lado})
     return {"cursors": sorted(cursors, key=lambda c: c["cursor_id"]), "general": GENERAL,
             "hidden_cursors": [], "special_cursors": [dict(cursor_id=i, **EMPTY) for i in (10, 11)]}
 
@@ -150,18 +159,30 @@ def bat(path, base, script, args=""):
     write(path, f"@echo off\n{PS.format(base=base, script=script, args=args).rstrip()}\npause\n", "ascii")
 
 
+# Se o ZIP não foi extraído, o Windows roda o .bat sozinho numa pasta temporária
+# e _arquivos não existe: avisa em vez de falhar calado. Só ASCII no .bat.
+FALTA = ('if not exist "%~dp0_arquivos\\instalador\\comum.ps1" (\n'
+         '  echo.\n'
+         '  echo Extraia o ZIP inteiro antes: botao direito no ZIP ^> Extrair tudo.\n'
+         '  echo Extract the whole ZIP first: right-click the ZIP ^> Extract All.\n'
+         '  echo.\n  pause\n  exit /b 1\n)\n')
+write(os.path.join(KIT, "Instalar.bat"),
+      "@echo off\n" + FALTA +
+      'start "" powershell -NoProfile -ExecutionPolicy Bypass -STA -WindowStyle Hidden '
+      '-File "%~dp0_arquivos\\instalador\\janela.ps1"\n', "ascii")
+write(os.path.join(KIT, "Desinstalar.bat"),
+      "@echo off\n" + FALTA +
+      'powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0_arquivos\\instalador\\desinstalar.ps1" -ApagarPasta\n'
+      "pause\n", "ascii")
+
+os.makedirs(os.path.join(ARQ, "previas"))
 for cor, nome in CORES:
-    pasta = os.path.join(KIT, nome)
-    os.makedirs(pasta)
-    previa(cor, nome, os.path.join(pasta, f"previa-{cor}.png"))
+    previa(cor, nome, os.path.join(ARQ, "previas", f"previa-{cor}.png"))
     for t in TAMANHOS:
-        bat(os.path.join(pasta, f"Instalar {nome} {t} px.bat"), "..\\", "instalar.ps1", f"-Cor {cor} -Tamanho {t}")
-        d = os.path.join(pasta, "manual (sem script)", f"{t} px")
+        d = os.path.join(ARQ, "manual (sem script)", nome, f"{t} px")
         os.makedirs(d)
         with open(os.path.join(d, "settings.json"), "w", encoding="utf-8", newline="\n") as f:
             json.dump(manual(cor, t), f, indent="\t", ensure_ascii=False)
-    bat(os.path.join(pasta, "Desinstalar.bat"), "..\\", "desinstalar.ps1")
-bat(os.path.join(KIT, "Desinstalar.bat"), "", "desinstalar.ps1")
 
 
 # ---------------------------------------------------------------- ZIPs
@@ -214,7 +235,7 @@ if os.path.isdir(cur):
     write(os.path.join(cur, "LEIA-ME.txt"), CUR_README, "utf-8-sig")
     for cor, nome in CORES:
         if os.path.isdir(os.path.join(cur, nome)):
-            shutil.copy(os.path.join(KIT, nome, f"previa-{cor}.png"), os.path.join(cur, nome, f"previa-{cor}.png"))
+            shutil.copy(os.path.join(ARQ, "previas", f"previa-{cor}.png"), os.path.join(cur, nome, f"previa-{cor}.png"))
     shutil.copy(os.path.join(PACK, "_previa.png"), os.path.join(cur, "previa-todas-as-cores.png"))
     zips.append(os.path.join(DIST, "gw2-facetado-cur.zip"))
     zipdir(cur, zips[1], "gw2-facetado-cur")
