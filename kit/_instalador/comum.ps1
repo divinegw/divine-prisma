@@ -119,11 +119,24 @@ function Assert-GameClosed {
 }
 
 # O que já está instalado na pasta do jogo / what is already installed in the game folder
+function Test-CustomCursors([string]$addons) {
+    # O nome da DLL muda com a forma de instalar: pela biblioteca do Nexus vira
+    # "Custom_Cursors.dll"; baixada do GitHub, "customcursors.dll". Aceita qualquer
+    # variação, a lista de addons do Nexus ou o settings.json que o addon grava.
+    # The DLL name depends on how it was installed, so accept any variant.
+    if (Get-ChildItem -LiteralPath $addons -Filter '*.dll' -ErrorAction SilentlyContinue |
+        Where-Object { $_.BaseName -replace '[\s_\-\.]', '' -match '^customcursors?' }) { return $true }
+    if (Test-Path -LiteralPath (Join-Path $addons 'CustomCursors\settings.json')) { return $true }
+    $cfg = Join-Path $addons 'Nexus\AddonConfig.json'
+    try { if ((Get-Content -LiteralPath $cfg -Raw -ErrorAction Stop) -match '"Name"\s*:\s*"Custom Cursors"') { return $true } } catch { }
+    return $false
+}
+
 function Get-GameStatus([string]$game) {
     $addons = Join-Path $game 'addons'
     [pscustomobject]@{
         Nexus         = (Test-Path -LiteralPath (Join-Path $addons 'Nexus')) -or (Test-Path -LiteralPath (Join-Path $game 'd3d11.dll'))
-        CustomCursors = [bool](Get-ChildItem -LiteralPath $addons -Filter 'customcursors*.dll' -ErrorAction SilentlyContinue)
+        CustomCursors = Test-CustomCursors $addons
         Settings      = Test-Path -LiteralPath (Join-Path $addons 'CustomCursors\settings.json')
         Pack          = Test-Path -LiteralPath (Join-Path $addons 'CustomCursors\cursors\gw2-facetado')
     }
@@ -203,18 +216,29 @@ function Get-InstallPlan([string]$Cor, [int]$Tamanho, [bool]$AliadoVerde) {
     }
 }
 
-function Install-Pack([string]$game, [string]$Cor, [int]$Tamanho, [bool]$AliadoVerde) {
+function Install-Pack([string]$game, [string]$Cor, [int]$Tamanho, [bool]$AliadoVerde, [bool]$Forcar = $false) {
     if (-not (Test-Path -LiteralPath (Join-Path $PACK_SRC 'hotspots.json'))) {
         Stop-Kit 'A pasta _arquivos\gw2-facetado está faltando. Extraia o ZIP inteiro antes de instalar.' 'The _arquivos\gw2-facetado folder is missing. Extract the whole ZIP before installing.'
     }
     if (-not (Test-GameDir $game)) { Stop-Kit "Não achei Gw2-64.exe em: $game" "Gw2-64.exe not found in: $game" }
     Assert-GameClosed
     $st = Get-GameStatus $game
-    if (-not $st.CustomCursors) {
-        Stop-Kit ("O addon Custom Cursors não está instalado nessa pasta.`n" +
+    if (-not $st.CustomCursors -and -not $Forcar) {
+        Stop-Kit ("Não encontrei o addon Custom Cursors nessa pasta.`n" +
                   "1) Instale o Nexus (raidcore.gg/Nexus).`n2) Abra o jogo, aperte Ctrl+O, vá em Addons > Library e instale 'Custom Cursors'.`n3) Feche o jogo e instale este pack.") `
-                 ("The Custom Cursors addon is not installed in that folder.`n" +
+                 ("Could not find the Custom Cursors addon in that folder.`n" +
                   "1) Install Nexus (raidcore.gg/Nexus).`n2) Start the game, press Ctrl+O, go to Addons > Library and install 'Custom Cursors'.`n3) Close the game and install this pack.")
+    }
+    # pasta do jogo protegida (ex.: Program Files sem permissão) / protected game folder
+    $teste = Join-Path $game 'addons\.gw2-facetado-teste'
+    try {
+        $null = New-Item -ItemType Directory -Force -Path (Split-Path $teste -Parent)
+        [IO.File]::WriteAllText($teste, 'x'); Remove-Item -LiteralPath $teste -Force
+    } catch {
+        Stop-Kit ("O Windows não deixou gravar na pasta do jogo ($game).`n" +
+                  "Feche esta janela, clique com o botão direito no Instalar.bat e escolha 'Executar como administrador'. Nada foi alterado.") `
+                 ("Windows did not allow writing to the game folder ($game).`n" +
+                  "Close this window, right-click Instalar.bat and choose 'Run as administrator'. Nothing was changed.")
     }
 
     $plano = @(Get-InstallPlan $Cor $Tamanho $AliadoVerde)

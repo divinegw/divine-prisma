@@ -11,6 +11,7 @@ param(
     [ValidateSet(32, 48, 64, 96, 128)]
     [int]$Tamanho = 48,
     [switch]$AliadoVerde,
+    [switch]$Forcar,          # instala mesmo sem detectar o Custom Cursors / install even if Custom Cursors isn't detected
     [string]$PastaJogo = '',
     [switch]$SemPerguntas
 )
@@ -27,7 +28,7 @@ try {
         $r = Read-Host (T 'Instalar? (S/N)' 'Install? (Y/N)')
         if ($r -notmatch '^\s*[sSyY]') { Stop-Kit 'Cancelado. Nada foi alterado.' 'Cancelled. Nothing was changed.' }
     }
-    $null = Install-Pack $game $Cor $Tamanho $AliadoVerde.IsPresent
+    $null = Install-Pack $game $Cor $Tamanho $AliadoVerde.IsPresent $Forcar.IsPresent
 } catch {
     Say $_.Exception.Message $_.Exception.Message 'Red'
     exit 1

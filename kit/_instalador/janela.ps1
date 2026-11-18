@@ -207,8 +207,16 @@ $btInstalar.Add_Click({
     Invoke-Seguro {
         $d = $cbPasta.Text.Trim().Trim('"')
         $tbLog.Clear()
+        $forcar = $false
+        if (-not (Get-GameStatus $d).CustomCursors) {
+            $r = [System.Windows.Forms.MessageBox]::Show($form,
+                (T "Não encontrei o addon Custom Cursors nessa pasta.`n`nSe você já instalou pelo Nexus (Ctrl+O > Addons > Library), clique em Sim para instalar mesmo assim. Se não instalou, clique em Não e instale o addon primeiro." "Could not find the Custom Cursors addon in that folder.`n`nIf you already installed it from Nexus (Ctrl+O > Addons > Library), click Yes to install anyway. If not, click No and install the addon first."),
+                'gw2-facetado', 'YesNo', 'Warning')
+            if ($r -ne 'Yes') { return }
+            $forcar = $true
+        }
         Say "Instalando em: $d" "Installing into: $d" 'Cyan'
-        $null = Install-Pack $d $script:Cor $script:Tamanho $cbAliado.Checked
+        $null = Install-Pack $d $script:Cor $script:Tamanho $cbAliado.Checked $forcar
         [void][System.Windows.Forms.MessageBox]::Show($form,
             (T "Pronto! Abra o jogo para ver os cursores.`n`nO tamanho fica igual nos três modos de 'Contraste do cursor' (Opções > Geral > Acessibilidade). Para trocar cor ou tamanho, é só instalar de novo." "Done! Start the game to see the cursors.`n`nThe size is the same in all three 'Cursor contrast' modes (Options > General > Accessibility). To switch colour or size, just install again."),
             'gw2-facetado', 'OK', 'Information')
